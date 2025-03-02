@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Intersection</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .circle{
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid red;
+            pointer-events: none;
+
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+           background: black;
+           color: white;
+           padding: 5px 10px;
+           font-size: 14px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="info">Click to create circles. Max 2 circle at a time.</div>
+    <script>
+        let circles = [];
+
+        document.addEventListener("click", (event)=>{
+            const radius =Math.floor(Math.random()*100+20);
+            const x=event.clientX;
+            const y=event.clientY;
+
+            const circle=document.createElement("div");
+            circle.classList.add("circle");
+            circle.style.width=`${radius*2}px`;
+            circle.style.height=`${radius*2}px`;
+            circle.style.left=`${x-radius}px`;
+            circle.style.top=`${y-radius}px`;
+
+
+            document.body.appendChild(circle);
+            circles.push({element:circle,x,y,radius});
+
+            if(circles.length>2){
+            circles.forEach(c=>document.body.removeChild(c.element));
+            circles=[];
+            }
+            
+
+
+            if(circles.length===2)
+        {
+            checkIntersection();
+        }
+        });
+        
+        function checkIntersection(){
+            const [c1,c2]=circles;
+            const dx=c2.x-c1.x;
+            const dy=c2.y-c1.y;
+            const distance=Math.sqrt(dx*dx+dy*dy);
+
+            if(distance<=c1.radius+c2.radius){
+                alert("Circles are intersecting");
+            }
+        }
+
+    </script>
+</body>
+</html>
